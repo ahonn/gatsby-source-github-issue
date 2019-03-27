@@ -1,6 +1,6 @@
 # gatsby-source-github-issue
 
- Gatsby source plugin from Github issue
+ Gatsby source plugin for Github issue
 
 ## Install
 

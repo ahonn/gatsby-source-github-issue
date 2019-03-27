@@ -1,6 +1,6 @@
 {
   "name": "gatsby-source-github-issue",
-  "description": "Gatsby source plugin for github issue",
+  "description": "Gatsby source plugin for Github issue",
   "version": "1.0.0",
   "author": "Ahonn Jiang <ahonn95@outlook.com>",
   "main": "index.js",
