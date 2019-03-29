@@ -14,8 +14,11 @@ exports.sourceNodes = async (context, pluginOptions) => {
   const github = new GithubApi(owner, repo);
 
   const issues = await github.getRepoIssues();
+  const validIssues = issues.filter(({ user, state }) => {
+    return user.login === owner && state === 'open';
+  });
 
-  issues.forEach(issue => {
+  validIssues.forEach(issue => {
     const markdownContent = wrapMarkdownTemplate(issue);
     createNode({
       ...issue,
@@ -32,4 +35,4 @@ exports.sourceNodes = async (context, pluginOptions) => {
   });
 
   return;
-}
+};

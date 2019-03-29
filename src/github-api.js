@@ -17,3 +17,4 @@ class GithubApi {
 }
 
 module.exports = GithubApi;
+
