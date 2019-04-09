@@ -4,35 +4,39 @@ const { wrapMarkdownTemplate } = require('./utils');
 const GithubApi = require('./github-api');
 
 exports.sourceNodes = async (context, pluginOptions) => {
-  const { actions, createNodeId, createContentDigest } = context;
+  const { actions, createNodeId, createContentDigest, reporter } = context;
   const { createNode } = actions;
   const { owner, repo } = pluginOptions;
 
   assert(owner, 'owner options is required');
   assert(repo, 'repo options is required');
 
-  const github = new GithubApi(owner, repo);
+  try {
+    const github = new GithubApi(owner, repo);
 
-  const issues = await github.getRepoIssues();
-  const validIssues = issues.filter(({ user, state }) => {
-    return user.login === owner && state === 'open';
-  });
-
-  validIssues.forEach(issue => {
-    const markdownContent = wrapMarkdownTemplate(issue);
-    createNode({
-      ...issue,
-      id: createNodeId(`github-issue-${issue.id}`),
-      parent: null,
-      children: [],
-      internal: {
-        type: 'GithubIssue',
-        mediaType: 'text/markdown',
-        content: markdownContent,
-        contentDigest: createContentDigest(issue),
-      },
+    const issues = await github.getRepoIssues();
+    const validIssues = issues.filter(({ user, state }) => {
+      return user.login === owner && state === 'open';
     });
-  });
 
-  return;
+    validIssues.forEach((issue) => {
+      const markdownContent = wrapMarkdownTemplate(issue);
+      createNode({
+        ...issue,
+        id: createNodeId(`github-issue-${issue.id}`),
+        parent: null,
+        children: [],
+        internal: {
+          type: 'GithubIssue',
+          mediaType: 'text/markdown',
+          content: markdownContent,
+          contentDigest: createContentDigest(issue),
+        },
+      });
+    });
+
+    return;
+  } catch (err) {
+    reporter.panic(err);
+  }
 };
