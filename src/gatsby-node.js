@@ -12,7 +12,7 @@ exports.sourceNodes = async (context, pluginOptions) => {
   assert(repo, 'repo options is required');
 
   try {
-    const github = new GithubApi(owner, repo);
+    const github = new GithubApi(owner, repo, token);
 
     const issues = await github.getRepoIssues();
     const validIssues = issues.filter(({ user, state }) => {
