@@ -6,7 +6,7 @@ const GithubApi = require('./github-api');
 exports.sourceNodes = async (context, pluginOptions) => {
   const { actions, createNodeId, createContentDigest, reporter } = context;
   const { createNode } = actions;
-  const { owner, repo } = pluginOptions;
+  const { owner, repo, token } = pluginOptions;
 
   assert(owner, 'owner options is required');
   assert(repo, 'repo options is required');
